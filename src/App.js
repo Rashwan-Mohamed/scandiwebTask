@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import SingleProduct from './singleProduct'
+import Products from './products'
+import Home from './Home'
+import { Handle } from './context'
+import Bag from './Bag'
+export default class App extends Component {
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  render() {
+    const { productId, path } = this.context
+    return (
+      <>
+        <BrowserRouter>
+          <Routes>
+            <Route path='/' element={<Home />}>
+              <Route path=':id' element={<Products path={path} />} />
+              <Route
+                path='product/:single'
+                element={<SingleProduct productId={productId} />}
+              />
+            <Route path='bag' element={<Bag/>} ></Route>
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </>
+    )
+  }
 }
-
-export default App;
+App.contextType = Handle
