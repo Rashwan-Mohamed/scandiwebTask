@@ -155,7 +155,11 @@ export class Cart extends Component {
         </div>
         <footer className='finish'>
           <h3>Total</h3>
-          <h3>${this.context.totalPrice}</h3>
+          <h3>
+            {' '}
+            {this.context.symbol}
+            {this.context.totalPrice}
+          </h3>
           <Link
             onClick={() => {
               this.props.hideBag()

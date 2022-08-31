@@ -50,14 +50,14 @@ nav {
   margin-left: 20px;
   cursor: pointer;
   display: flex;
-justify-content: flex-end;
+  justify-content: flex-end;
 }
 .cart > div:nth-child(1) {
-display: flex;
-justify-content: center;
-align-items: center;
-position: relative;
-max-width: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  max-width: 20px;
 }
 .cart span {
   font-weight: 700;
@@ -72,9 +72,9 @@ max-width: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
-position: absolute;
-top: -12px;
-left: 12px;
+  position: absolute;
+  top: -12px;
+  left: 12px;
 }
 nav svg {
   align-self: center;
@@ -88,6 +88,7 @@ nav svg {
   justify-self: flex-end;
   position: relative;
   user-select: none;
+  z-index: 120;
 }
 .select-currency svg {
   transition: transform 300ms ease-in-out;
@@ -401,7 +402,7 @@ nav svg {
   right: 72px;
   width: 325px;
   height: 677px;
-  z-index: 10;
+  z-index: 110;
   background-color: #fff;
   padding: 2rem 1rem;
   display: flex;

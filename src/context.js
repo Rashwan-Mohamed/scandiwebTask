@@ -9,12 +9,13 @@ export default class Context extends Component {
       path: 'all',
       productId: '',
       currency: 0,
+      symbol:"$",
       cart: [],
       added: false,
       id: '',
       summ: 0,
       totalPrice: 0,
-      tax:0
+      tax:0,
     }
     this.recievePath = this.recievePath.bind(this)
     this.recieveId = this.recieveId.bind(this)
@@ -52,8 +53,8 @@ export default class Context extends Component {
   recieveId(productId) {
     this.setState({ productId })
   }
-  setCurrency(currency) {
-    this.setState({ currency: currency })
+  setCurrency({currency, symbol}) {
+    this.setState({ currency, symbol })
   }
   addToCart({ data, attributes, amount }) {
    
@@ -130,11 +131,12 @@ export default class Context extends Component {
           path: this.state.path,
           productId: this.state.productId,
           currency: this.state.currency,
+          symbol: this.state.symbol,
           added: this.state.added,
           summ: this.state.summ,
           cart: this.state.cart,
           totalPrice: this.state.totalPrice,
-          tax:this.state.tax
+          tax: this.state.tax,
         }}
       >
         {this.props.children}

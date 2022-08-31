@@ -29,7 +29,6 @@ export default class Navbar extends Component {
   }
   componentDidUpdate() {
     if (this.state.showBag) {
-      console.log(this.state.showBag, 'called!')
       document.body.style.overflowY = 'hidden'
     } else {
       document.body.style.overflowY = 'unset'
@@ -40,7 +39,6 @@ export default class Navbar extends Component {
     this.context.recievePath(name)
   }
   setCurrency(currency) {
-    console.log('called', currency)
     this.context.setCurrency(currency)
   }
 
@@ -162,7 +160,10 @@ export default class Navbar extends Component {
                         return (
                           <button
                             onClick={() => {
-                              this.setCurrency(index)
+                              this.setCurrency({
+                                currency: index,
+                                symbol: symbol,
+                              })
                             }}
                             key={label}
                           >

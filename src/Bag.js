@@ -5,7 +5,7 @@ export class Bag extends Component {
   constructor(props) {
     super(props)
 
-    this.state = { pic: 0 }
+    this.state = { pic: 0, }
     this.modifyIt = this.modifyIt.bind(this)
     this.changeIt = this.changeIt.bind(this)
   }
@@ -237,11 +237,18 @@ export class Bag extends Component {
 
         <footer className='finish'>
           <h3>Tax 21%:</h3>
-          <h3>${this.context.tax}</h3>
+          <h3>
+            {this.context.symbol}
+            {this.context.tax}
+          </h3>
           <h3>Quantity:</h3>
           <h3>{this.context.summ}</h3>
           <h3>Total:</h3>
-          <h3>${this.context.totalPrice}</h3>
+          <h3>
+            {' '}
+            {this.context.symbol}
+            {this.context.totalPrice}
+          </h3>
         </footer>
       </section>
     )
