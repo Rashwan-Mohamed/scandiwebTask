@@ -1,23 +1,15 @@
 import React, { Component } from 'react'
-
+// recieve the gallery as prop, gallery is an array of src`s
+//the main object is todisplay only three images at once, and create a pagination according to gallery length
+//
 export default class Gallery extends Component {
   constructor(props) {
     super(props)
-    let sliced = []
-    let combined = []
-    let len = this.props.gallery.length
-    let i = 0
-    while (len > 0) {
-      len -= 3
-      sliced = this.props.gallery.slice(i * 3, i * 3 + 3)
-      combined.push(sliced)
-      i++
-    }
+    let initialImg = this.props.gallery[1] || this.props.gallery[0]
     this.state = {
-      select: this.props.gallery[0],
-      paginted: this.props.gallery.slice(0, 3),
-      gallSet: combined,
+      select: initialImg,
       checked: 0,
+      start: 0,
     }
     this.turnIt = this.turnIt.bind(this)
   }
@@ -36,8 +28,7 @@ export default class Gallery extends Component {
   }
 
   turnIt(index) {
-    this.setState({ checked: index })
-    this.setState({ paginted: this.state.gallSet[index] })
+    this.setState({ checked: index, start: index })
   }
   render() {
     return (
@@ -62,21 +53,22 @@ export default class Gallery extends Component {
               ></span>
             )
           })}
-            </div>
-            <div className='megos' >
-            {this.state.paginted.map((img, index) => {
-          return (
-            <img
-              onClick={() => this.setState({ select: img })}
-              className='select-image'
-              src={img}
-              alt={this.props.name}
-              key={img}
-            />
-          )
-        })}
-
-            </div>
+        </div>
+        <div className='megos'>
+          {this.props.gallery
+            .slice(this.state.start * 3, this.state.start * 3 + 3)
+            .map((src, index) => {
+              return (
+                <img
+                  onClick={() => this.setState({ select: src })}
+                  className='select-image'
+                  src={src}
+                  key={index}
+                  alt={this.props.name}
+                />
+              )
+            })}
+        </div>
       </article>
     )
   }

@@ -1,43 +1,10 @@
 import React, { Component } from 'react'
 import { Query } from '@apollo/client/react/components'
-import { gql } from '@apollo/client'
 import { Link } from 'react-router-dom'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import SingleProduct from './singleProduct'
 import { Handle } from './context'
+import { GET_ALL_PRODUCTS } from './queries'
 
-const GET_ALL_PRODUCTS = gql`
-  query products($path: String!) {
-    category(input: { title: $path }) {
-      name
-      products {
-        id
-        name
-        description
-        gallery
-        inStock
-        attributes {
-          name
-          type
-          id
-          items {
-            displayValue
-            value
-            id
-          }
-        }
-        prices {
-          currency {
-            label
-            symbol
-          }
-          amount
-        }
-        brand
-      }
-    }
-  }
-`
+
 
 export class Products extends Component {
   constructor(props) {
@@ -49,9 +16,8 @@ export class Products extends Component {
     let attributes = {}
     data.attributes.map((item) => {
       const { name, items } = item
-      attributes[name] = items[0].id
+      return (attributes[name] = items[0].id)
     })
-    console.log(attributes)
     this.context.addToCart({
       data,
       attributes,
@@ -79,23 +45,26 @@ export class Products extends Component {
                   category: { products },
                 } = data
                 return products.map((product) => {
-                  const { name, id, gallery, prices, inStock } = product
+                  const { name, id, gallery, prices, inStock, brand } = product
                   const {
                     amount,
                     currency: { symbol },
                   } = prices[currency]
                   return (
                     <article key={id} className='product-container'>
-                    {!inStock&& <div className='outStock' >OUT OF STOCK</div> }
                       <Link
+                        className={`${!inStock ? 'outStock' : 'undefined'}`}
                         onClick={(e) => {
                           this.onClickSt(id)
                         }}
                         to={`/product/${id}`}
                       >
+                        {!inStock && <p className='stockPara'>out of stock</p>}
                         <img src={gallery[0]} alt='' />
                         <div>
-                          <h3>{name}</h3>
+                          <h3>
+                            {brand} {name}
+                          </h3>
                           <span>
                             {symbol} {amount}
                           </span>

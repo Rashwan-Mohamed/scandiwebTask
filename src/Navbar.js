@@ -1,37 +1,46 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { Query } from '@apollo/client/react/components'
-import { gql } from '@apollo/client'
 import { Link } from 'react-router-dom'
 import { Handle } from './context'
+import { GET_ALL_PRODUCTS_NAVBAR, GET_CURRENCIES_NAVBAR } from './queries'
+
 import Cart from './cart'
-const GET_ALL_PRODUCTS = gql`
-  query categories {
-    categories {
-      name
-    }
-  }
-`
-const GET_CURRENCIES = gql`
-  query currence {
-    currencies {
-      label
-      symbol
-    }
-  }
-`
+
 export default class Navbar extends Component {
   constructor(props) {
     super(props)
-    this.state = { path: 'all', showBag: false, showCurrency: false }
+    this.detectClick = React.createRef()
+    this.cartClose = React.createRef()
+    this.state = {
+      path: 'all',
+      showCurrency: false,
+      message: '',
+      showBag: false,
+    }
     this.onClickSt = this.onClickSt.bind(this)
     this.setCurrency = this.setCurrency.bind(this)
-    this.hideBag = this.hideBag.bind(this)
+    this.closeIt = this.closeIt.bind(this)
+    this.changeMessage = this.changeMessage.bind(this)
   }
   componentDidUpdate() {
     if (this.state.showBag) {
       document.body.style.overflowY = 'hidden'
     } else {
       document.body.style.overflowY = 'unset'
+    }
+  }
+  componentDidMount() {
+    window.addEventListener('click', this.closeIt)
+  }
+  componentWillUnmount() {
+    window.removeEventListener('click', this.closeIt)
+  }
+  closeIt(e) {
+    if (
+      e.target.isEqualNode(this.detectClick.current) === false &&
+      this.state.showCurrency === true
+    ) {
+      this.setState({ showCurrency: false })
     }
   }
   onClickSt(name) {
@@ -41,16 +50,17 @@ export default class Navbar extends Component {
   setCurrency(currency) {
     this.context.setCurrency(currency)
   }
-
-  hideBag() {
-    this.setState({ showBag: false })
+  changeMessage(oper) {
+    if (oper === 'close') {
+      this.setState({ showBag: false })
+    }
   }
   render() {
     return (
       <>
         <nav>
           <section className='links'>
-            <Query query={GET_ALL_PRODUCTS}>
+            <Query query={GET_ALL_PRODUCTS_NAVBAR}>
               {({ data, loading, error }) => {
                 if (loading) return 'loading..'
                 if (error) return 'error..'
@@ -121,13 +131,14 @@ export default class Navbar extends Component {
             </defs>
           </svg>
 
-          <Query query={GET_CURRENCIES}>
+          <Query query={GET_CURRENCIES_NAVBAR}>
             {({ data, error, loading }) => {
               if (loading) return 'loading...'
               if (error) return 'error..'
               return (
                 <section className='select-currency' name='' id=''>
                   <span
+                    ref={this.detectClick}
                     onClick={() => {
                       this.setState({ showCurrency: !this.state.showCurrency })
                     }}
@@ -164,6 +175,9 @@ export default class Navbar extends Component {
                                 currency: index,
                                 symbol: symbol,
                               })
+                              this.setState({
+                                showCurrency: false,
+                              })
                             }}
                             key={label}
                           >
@@ -178,13 +192,14 @@ export default class Navbar extends Component {
             }}
           </Query>
           <button
+            ref={this.cartClose}
             onClick={() => {
               this.setState({ showBag: !this.state.showBag })
             }}
             className='cart'
           >
             <div>
-              {this.context.summ>0&&<span>{this.context.summ}</span>}{' '}
+              {this.context.summ > 0 && <span>{this.context.summ}</span>}{' '}
               <svg
                 width='20'
                 height='20'
@@ -208,7 +223,13 @@ export default class Navbar extends Component {
             </div>
           </button>
           {this.state.showBag && <div className='modal-overlay' />}
-          {this.state.showBag && <Cart hideBag={this.hideBag} />}
+
+          {this.state.showBag && (
+            <Cart
+              changeMessage={this.changeMessage}
+              cartClose={this.cartClose}
+            />
+          )}
         </nav>
       </>
     )

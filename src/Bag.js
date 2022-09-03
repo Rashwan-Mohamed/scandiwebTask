@@ -5,17 +5,14 @@ export class Bag extends Component {
   constructor(props) {
     super(props)
 
-    this.state = { pic: 0, }
+    this.state = { pic: 0 }
     this.modifyIt = this.modifyIt.bind(this)
     this.changeIt = this.changeIt.bind(this)
   }
   componentDidMount() {
     let nemo = {}
     this.context.cart.map((item, index) => {
-      const {
-        data: { gallery },
-      } = item
-      nemo[index] = 0
+      return (nemo[index] = 0)
     })
     this.setState({ pic: nemo })
   }
@@ -28,24 +25,43 @@ export class Bag extends Component {
     }
   }
   changeIt(index, oper, len) {
+    let ewDFo = {}
     if (oper === 'next') {
-      if (this.state.pic[index] >= len-1) {
-        this.state.pic[index] = 0
-        this.setState({ pic: { ...this.state.pic } })
+      if (this.state.pic[index] >= len - 1) {
+        for (let [key, value] of Object.entries(this.state.pic)) {
+          if (Number(key) === Number(index)) {
+            value = 0
+          }
+          ewDFo[key] = value
+        }
+        this.setState({ pic: ewDFo })
       } else {
-        this.state.pic[index]++
-        this.setState({ pic: { ...this.state.pic } })
-
-
+        for (let [key, value] of Object.entries(this.state.pic)) {
+          if (Number(key) === Number(index)) {
+            value += 1
+          }
+          ewDFo[key] = value
+        }
+        this.setState({ pic: ewDFo })
       }
     }
     if (oper === 'prev') {
       if (this.state.pic[index] <= 0) {
-        this.state.pic[index] = len - 1
-        this.setState({ pic: { ...this.state.pic } })
+        for (let [key, value] of Object.entries(this.state.pic)) {
+          if (Number(key) === Number(index)) {
+            value = len - 1
+          }
+          ewDFo[key] = value
+        }
+        this.setState({ pic: ewDFo })
       } else {
-        this.state.pic[index]--
-        this.setState({ pic: { ...this.state.pic } })
+        for (let [key, value] of Object.entries(this.state.pic)) {
+          if (Number(key) === Number(index)) {
+            value -= 1
+          }
+          ewDFo[key] = value
+        }
+        this.setState({ pic: ewDFo })
       }
     }
   }

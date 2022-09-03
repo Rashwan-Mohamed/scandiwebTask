@@ -6,8 +6,8 @@ export class Description extends Component {
     super(props)
     let tribute = {}
     const { attributes } = this.props.data
-    attributes.map((attribute) => {
-      const { name, id, type, items } = attribute
+    attributes.forEach((attribute) => {
+      const {  id } = attribute
       tribute[id] = ''
     })
     this.state = { selected: tribute, check: false,}
@@ -36,7 +36,7 @@ export class Description extends Component {
 
     render() {
         const { added }=this.context
-    const { name, description, prices, brand, attributes, id,inStock } = this.props.data
+    const { name, description, prices, brand, attributes,inStock } = this.props.data
     const {
       amount,
       currency: { symbol },
@@ -56,7 +56,7 @@ export class Description extends Component {
                 <h3 className='robto'>{name}:</h3>
                 <div className='spans'>
                   {items.map((block) => {
-                    const { id, displayValue, value } = block
+                    const { id, value } = block
                     return (
                       <span
                         className={`${
