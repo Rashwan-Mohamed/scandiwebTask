@@ -725,10 +725,6 @@ nav svg {
     justify-self: flex-start;
   }
 
-  .main-image {
-    max-width: 30vw;
-  }
-
   .singleProduct {
     grid-template-columns: 1fr 1fr;
     gap: 0 50px;
@@ -736,7 +732,7 @@ nav svg {
 
   .main-image {
     max-width: 30vw;
-    max-height: 80%;
+    max-height: 300px;
   }
   .singleProduct {
     gap: 0 20px;
